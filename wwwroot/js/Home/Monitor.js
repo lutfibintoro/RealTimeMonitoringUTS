@@ -388,7 +388,12 @@ webSocket.onopen = function (event) {
 
 // 2. (onmessage): Dipanggil setiap kali menerima pesan dari server
 webSocket.onmessage = function (event) {
-    const objData = JSON.parse(event.data);
+    try {
+        const objData = JSON.parse(event.data);
+    } catch {
+        console.log("fail parse");
+        return;
+    }
 
     addAtValue.push(objData.addAt);
     temperatureCValue.push(objData.temperatureC);
