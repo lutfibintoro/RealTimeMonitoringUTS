@@ -283,11 +283,6 @@ FakesAssemblies/
 
 # Node.js Tools for Visual Studio
 .ntvs_analysis.dat
-# Abaikan semua node_modules
-RealTimeMonitoringUTS/node_modules/
-
-# Tapi JANGAN abaikan yang ini
-#!RealTimeMonitoringUTS/wwwroot/lib/chart.js/node_modules/
 
 
 # Visual Studio 6 build log
