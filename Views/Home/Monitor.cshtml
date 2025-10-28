@@ -1,0 +1,26 @@
+﻿@{
+	ViewData["Title"] = "Monitor";
+}
+<link rel="stylesheet" href="~/css/Home/Monitor.css" />
+
+<div class="parent-container">
+	<div class="child-container" id="child-1">
+		<canvas class="myChart" id="chart-TemperatureC"></canvas>
+	</div>
+	<div class="child-container" id="child-2">
+		<canvas class="myChart" id="chart-Humidity"></canvas>
+	</div>
+</div>
+
+<div class="parent-container">
+	<div class="child-container" id="child-1">
+		<canvas class="myChart" id="chart-MethaneGas"></canvas>
+	</div>
+	<div class="child-container" id="child-2">
+		<canvas class="myChart" id="chart-HydrogenGas"></canvas>
+	</div>
+</div>
+
+@section Scripts {
+	<script src="~/js/Home/Monitor.js"></script>
+}

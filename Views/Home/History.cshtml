@@ -1,0 +1,158 @@
+﻿@{
+    ViewData["Title"] = "History";
+}
+
+<!-- Stats Cards -->
+<div class="row g-4 mb-4">
+	<div class="col-12 col-md-4">
+		<div class="card border-0 shadow-sm h-100">
+			<div class="card-body">
+				<div class="d-flex justify-content-between align-items-start mb-3">
+					<div>
+						<h6 class="text-muted fw-normal mb-2">Total Penjualan</h6>
+						<h2 class="fw-bold mb-0">28.000</h2>
+					</div>
+					<div class="bg-primary bg-opacity-10 p-3 rounded">
+						<i class="bi bi-graph-up-arrow text-primary fs-3"></i>
+					</div>
+				</div>
+				<p class="text-success mb-0 fw-semibold">
+					<i class="bi bi-arrow-up"></i> +12.5% dari bulan lalu
+				</p>
+			</div>
+		</div>
+	</div>
+
+	<div class="col-12 col-md-4">
+		<div class="card border-0 shadow-sm h-100">
+			<div class="card-body">
+				<div class="d-flex justify-content-between align-items-start mb-3">
+					<div>
+						<h6 class="text-muted fw-normal mb-2">Total Revenue</h6>
+						<h2 class="fw-bold mb-0">Rp 103jt</h2>
+					</div>
+					<div class="bg-success bg-opacity-10 p-3 rounded">
+						<i class="bi bi-currency-dollar text-success fs-3"></i>
+					</div>
+				</div>
+				<p class="text-success mb-0 fw-semibold">
+					<i class="bi bi-arrow-up"></i> +18.2% dari bulan lalu
+				</p>
+			</div>
+		</div>
+	</div>
+
+	<div class="col-12 col-md-4">
+		<div class="card border-0 shadow-sm h-100">
+			<div class="card-body">
+				<div class="d-flex justify-content-between align-items-start mb-3">
+					<div>
+						<h6 class="text-muted fw-normal mb-2">Active Users</h6>
+						<h2 class="fw-bold mb-0">13.600</h2>
+					</div>
+					<div class="bg-info bg-opacity-10 p-3 rounded">
+						<i class="bi bi-people text-info fs-3"></i>
+					</div>
+				</div>
+				<p class="text-success mb-0 fw-semibold">
+					<i class="bi bi-arrow-up"></i> +8.7% dari bulan lalu
+				</p>
+			</div>
+		</div>
+	</div>
+</div>
+
+<!-- Top Charts - Side by Side -->
+<div class="row g-4 mb-4">
+	<!-- Chart Kiri -->
+	<div class="col-12 col-lg-6">
+		<div class="card border-0 shadow-sm h-100">
+			<div class="card-body">
+				<h5 class="card-title fw-bold mb-4">Performa Penjualan</h5>
+				<div id="chart-left" class="border border-2 border-dashed rounded p-5 text-center text-muted" style="min-height: 300px;">
+					<div class="d-flex align-items-center justify-content-center h-100">
+						<div>
+							<i class="bi bi-bar-chart fs-1 mb-3 d-block"></i>
+							<p class="mb-0">Tempatkan Chart Kiri Di Sini</p>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- Chart Kanan -->
+	<div class="col-12 col-lg-6">
+		<div class="card border-0 shadow-sm h-100">
+			<div class="card-body">
+				<h5 class="card-title fw-bold mb-4">Revenue vs Expense</h5>
+				<div id="chart-right" class="border border-2 border-dashed rounded p-5 text-center text-muted" style="min-height: 300px;">
+					<div class="d-flex align-items-center justify-content-center h-100">
+						<div>
+							<i class="bi bi-graph-up fs-1 mb-3 d-block"></i>
+							<p class="mb-0">Tempatkan Chart Kanan Di Sini</p>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<!-- Top Charts - Side by Side -->
+@* <div class="row g-4 mb-4">
+	<!-- Chart Kiri -->
+	<div class="col-12 col-lg-6">
+		<div class="card border-0 shadow-sm h-100">
+			<div class="card-body">
+				<h5 class="card-title fw-bold mb-4">Performa Penjualan</h5>
+				<div id="chart-left" class="border border-2 border-dashed rounded p-5 text-center text-muted" style="min-height: 300px;">
+					<div class="d-flex align-items-center justify-content-center h-100">
+						<div>
+							<i class="bi bi-bar-chart fs-1 mb-3 d-block"></i>
+							<p class="mb-0">Tempatkan Chart Kiri Di Sini</p>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- Chart Kanan -->
+	<div class="col-12 col-lg-6">
+		<div class="card border-0 shadow-sm h-100">
+			<div class="card-body">
+				<h5 class="card-title fw-bold mb-4">Revenue vs Expense</h5>
+				<div id="chart-right" class="border border-2 border-dashed rounded p-5 text-center text-muted" style="min-height: 300px;">
+					<div class="d-flex align-items-center justify-content-center h-100">
+						<div>
+							<i class="bi bi-graph-up fs-1 mb-3 d-block"></i>
+							<p class="mb-0">Tempatkan Chart Kanan Di Sini</p>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div> *@
+
+<!-- Bottom Large Chart -->
+<div class="row">
+	<div class="col-12">
+		<div class="card border-0 shadow-sm">
+			<div class="card-body">
+				<h5 class="card-title fw-bold mb-2">Pertumbuhan Traffic Website</h5>
+				<p class="text-muted mb-4">Analisis komprehensif aktivitas pengguna</p>
+				<div id="chart-bottom" class="border border-2 border-dashed rounded p-5 text-center text-muted" style="min-height: 400px;">
+					<div class="d-flex align-items-center justify-content-center h-100">
+						<div>
+							<i class="bi bi-pie-chart fs-1 mb-3 d-block"></i>
+							<p class="mb-0">Tempatkan Chart Besar Di Sini</p>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+

@@ -1,0 +1,12 @@
+﻿@model ErrorViewModel
+@{
+	ViewData["Title"] = "hello world welcome";
+}
+
+<h2>Welocme</h2>
+<ul>
+	@for (int i = 0; i < (int)ViewData["NumTimes"]!; i++)
+	{
+		<li>@ViewData["Message"] : @Model.ShowRequestId : @Model.RequestId</li>
+	}
+</ul>

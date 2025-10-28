@@ -1,0 +1,35 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+	<PropertyGroup>
+		<TargetFramework>net9.0</TargetFramework>
+		<Nullable>enable</Nullable>
+		<ImplicitUsings>enable</ImplicitUsings>
+	</PropertyGroup>
+
+	<ItemGroup>
+	  <Content Include="wwwroot\lib\chart.js\node_modules\%40kurkle\color\package.json" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <None Include="wwwroot\lib\chart.js\node_modules\%40kurkle\color\dist\color.cjs" />
+	  <None Include="wwwroot\lib\chart.js\node_modules\%40kurkle\color\dist\color.esm.js" />
+	  <None Include="wwwroot\lib\chart.js\node_modules\%40kurkle\color\dist\color.min.js" />
+	  <None Include="wwwroot\lib\chart.js\node_modules\%40kurkle\color\dist\color.min.js.map" />
+	  <None Include="wwwroot\lib\chart.js\node_modules\%40kurkle\color\LICENSE.md" />
+	  <None Include="wwwroot\lib\chart.js\node_modules\%40kurkle\color\README.md" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Microsoft.EntityFrameworkCore" Version="9.0.8" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="9.0.8" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="9.0.8">
+			<PrivateAssets>all</PrivateAssets>
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
+		</PackageReference>
+	</ItemGroup>
+
+	<ItemGroup>
+	  <TypeScriptCompile Include="wwwroot\lib\chart.js\node_modules\%40kurkle\color\dist\color.d.ts" />
+	</ItemGroup>
+
+</Project>

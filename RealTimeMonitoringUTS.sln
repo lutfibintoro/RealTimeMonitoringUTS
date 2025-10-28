@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.14.36518.9
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RealTimeMonitoringUTS", "RealTimeMonitoringUTS.csproj", "{F7662AA4-0FDA-4DD3-93F0-D90F144D27FC}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{F7662AA4-0FDA-4DD3-93F0-D90F144D27FC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F7662AA4-0FDA-4DD3-93F0-D90F144D27FC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F7662AA4-0FDA-4DD3-93F0-D90F144D27FC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F7662AA4-0FDA-4DD3-93F0-D90F144D27FC}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {6AF7D84D-5766-4448-8C6C-A6584AEF0A84}
+	EndGlobalSection
+EndGlobal

@@ -1,0 +1,59 @@
+﻿/* Mengatur dasar halaman agar terlihat clean */
+/* --- Parent Container --- */
+.parent-container {
+    /* 1. Lebar 100% dari elemen pembungkusnya (dalam hal ini 'body' dengan padding) */
+    width: 100%;
+    /* 2. Rasio 16:9 menggunakan properti CSS modern */
+    aspect-ratio: 16 / 9;
+    /* 3. Menggunakan Flexbox untuk menata child container */
+    display: flex;
+    /* 4. Memberi "slight gap" antar child container */
+    gap: 1rem; /* Anda bisa ubah nilainya, misal: 10px atau 0.5rem */
+    /* --- Sentuhan Profesional --- */
+    background-color: #ffffff; /* Latar belakang parent putih bersih */
+    border-radius: 12px; /* Sudut membulat */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05); /* Bayangan halus */
+    padding: 1rem; /* Memberi jarak internal antara tepi parent dan child */
+    box-sizing: border-box; /* Memastikan padding termasuk dalam 100% width */
+    margin: 5px;
+}
+
+/* --- Child Containers --- */
+.child-container {
+    /* 1. Membuat kedua child memiliki lebar yang sama (karena ada 2, masing-masing 50%) */
+    flex: 1; /* Shorthand untuk flex-grow: 1, flex-shrink: 1, flex-basis: 0% */
+    /* 2. Tinggi 100% otomatis didapat dari 'display: flex' pada parent
+				   (default-nya adalah align-items: stretch) */
+    /* --- Sentuhan Profesional --- */
+    background-color: #f9f9f9; /* Warna latar yang sedikit berbeda */
+    border-radius: 8px; /* Sudut membulat untuk child */
+    border: 1px solid #e0e0e0; /* Garis tepi tipis */
+    /* (Opsional) Memberi padding internal untuk konten di dalam child */
+    padding: 1.5rem;
+    box-sizing: border-box;
+    /* (Opsional) Menambahkan placeholder konten agar terlihat */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #555;
+    font-size: 1.2rem;
+    font-weight: 500;
+}
+
+/* (Opsional) Anda bisa hapus ini jika sudah ada konten asli */
+#child-1 {
+    background-color: #e6f7ff;
+    border-color: #b3e0ff;
+    color: #0056b3;
+}
+
+#child-2 {
+    background-color: #fffbe6;
+    border-color: #ffe58f;
+    color: #8a6d3b;
+}
+
+.myChart {
+    height: 100%;
+    width: 100%;
+}
