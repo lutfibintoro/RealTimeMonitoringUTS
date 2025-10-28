@@ -1,6 +1,4 @@
-﻿import { Chart } from "chart.js";
-
-const MAX_DATA = 20;
+﻿const MAX_DATA = 20;
 const temperatureCValue = [];
 const humidityValue = [];
 const methaneGasValue = [];

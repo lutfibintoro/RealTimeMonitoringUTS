@@ -2,8 +2,8 @@
 POST https://localhost:7143/arduino?TemperatureC=11&Humidity=33&MethaneGas=22&HydrogenGas=77
 ###
 
-GET https://protect.somee.com/arduino?limit=20
+GET http://protect.tryasp.net/arduino?limit=20
 ###
 
-DELETE https://localhost:7143/arduino
+DELETE http://protect.tryasp.net/arduino
 ###

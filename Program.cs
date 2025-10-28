@@ -14,7 +14,7 @@ namespace RealTimeMonitoringUTS
             builder.Services.AddControllersWithViews();
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddDbContext<RealTimeMonitoringDbContext>(option =>
-                option.UseSqlServer(builder.Configuration.GetConnectionString("DefaultSQLConnectionMonsterAsp")));
+                option.UseSqlServer(builder.Configuration.GetConnectionString("DefaultSQLConnection")));
 
             var app = builder.Build();
 
