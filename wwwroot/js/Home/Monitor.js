@@ -326,7 +326,16 @@ const chartZ = new Chart(ctxZ, {
 
 
 
-
+chartTemperatureC.update();
+chartHumidity.update();
+chartMethaneGas.update();
+chartHydrogenGas.update();
+chartSmoke.update();
+chartLpgGas.update();
+chartAlcohonGas.update();
+chartX.update();
+chartY.update();
+chartZ.update();
 //function addData(value) {
 //    const now = new Date().toLocaleTimeString();
 
@@ -383,56 +392,75 @@ webSocket.onopen = function (event) {
     console.log('Koneksi berhasil dibuka!');
 
     // Setelah koneksi terbuka, kita bisa mulai mengirim data
-    webSocket.send('Halo Server WebSocket!');
+    const data = {
+        ok: "ok"
+    }
+    console.log(data);
+    webSocket.send(JSON.stringify(data));
 };
 
 // 2. (onmessage): Dipanggil setiap kali menerima pesan dari server
 webSocket.onmessage = function (event) {
+    //console.log("Raw data dari server:", event.data);
+
     try {
         const objData = JSON.parse(event.data);
-    } catch {
-        console.log("fail parse");
-        return;
+        console.log(objData.AddAt);
+        console.log(objData.TemperatureC);
+        console.log(objData.Humidity);
+        console.log(objData.MethaneGas);
+        console.log(objData.HydrogenGas);
+        console.log(objData.Smoke);
+        console.log(objData.LpgGas);
+        console.log(objData.AlcohonGas);
+        console.log(objData.X);
+        console.log(objData.Y);
+        console.log(objData.Z);
+
+        addAtValue.push(objData.AddAt);
+        temperatureCValue.push(objData.TemperatureC);
+        humidityValue.push(objData.Humidity);
+        methaneGasValue.push(objData.MethaneGas);
+        hydrogenGasValue.push(objData.HydrogenGas);
+        smokeValue.push(objData.Smoke);
+        lpgGasValue.push(objData.LpgGas);
+        alcohonGasValue.push(objData.AlcohonGas);
+        xValue.push(objData.X);
+        yValue.push(objData.Y);
+        zValue.push(objData.Z);
+
+        // Jika data melebihi batas, hapus yang paling awal
+        if (addAtValue.length > MAX_DATA) {
+            addAtValue.shift();
+            temperatureCValue.shift();
+            humidityValue.shift();
+            methaneGasValue.shift();
+            hydrogenGasValue.shift();
+            smokeValue.shift();
+            lpgGasValue.shift();
+            alcohonGasValue.shift();
+            xValue.shift();
+            yValue.shift();
+            zValue.shift();
+        }
+
+        // Update semua chart
+        chartTemperatureC.update();
+        chartHumidity.update();
+        chartMethaneGas.update();
+        chartHydrogenGas.update();
+        chartSmoke.update();
+        chartLpgGas.update();
+        chartAlcohonGas.update();
+        chartX.update();
+        chartY.update();
+        chartZ.update();
+
+    } catch (err) {
+        console.error("❌ Gagal parse JSON:", err, "Data:", event.data);
     }
-
-    addAtValue.push(objData.addAt);
-    temperatureCValue.push(objData.temperatureC);
-    humidityValue.push(objData.humidity);
-    methaneGasValue.push(objData.methaneGas);
-    hydrogenGasValue.push(objData.hydrogenGas);
-    smokeValue.push(objData.smoke);
-    lpgGasValue.push(objData.lpgGas);
-    alcohonGasValue.push(objData.alcohonGas);
-    xValue.push(objData.x);
-    yValue.push(objData.y);
-    zValue.push(objData.z);
-
-    // Jika data melebihi batas, hapus yang paling awal
-    if (addAtValue.length > MAX_DATA) {
-        addAtValue.shift();
-        temperatureCValue.shift();
-        humidityValue.shift();
-        methaneGasValue.shift();
-        hydrogenGasValue.shift();
-        smokeValue.shift();
-        lpgGasValue.shift();
-        alcohonGasValue.shift();
-        xValue.shift();
-        yValue.shift();
-        zValue.shift();
-    }
-
-    chartTemperatureC.update();
-    chartHumidity.update();
-    chartMethaneGas.update();
-    chartHydrogenGas.update();
-    chartSmoke.update();
-    chartLpgGas.update();
-    chartAlcohonGas.update();
-    chartX.update();
-    chartY.update();
-    chartZ.update();
 };
+
 
 // 3. (onclose): Dipanggil saat koneksi ditutup (baik oleh server maupun client)
 webSocket.onclose = function (event) {
@@ -449,9 +477,8 @@ webSocket.onerror = function (error) {
 };
 
 
-
 const dangerContainer = document.getElementById('danger-buttor');
-container.addEventListener('click', function (event) {
+dangerContainer.addEventListener('click', function (event) {
     $.ajax({
         url: '/arduino',
         type: 'DELETE',

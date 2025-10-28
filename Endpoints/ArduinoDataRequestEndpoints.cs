@@ -36,7 +36,7 @@ namespace RealTimeMonitoringUTS.Endpoints
                     X = x,
                     Y = y,
                     Z = z,
-                    AddAt = DateTime.Now
+                    AddAt = new(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, DateTime.Now.Hour, DateTime.Now.Minute, DateTime.Now.Second)
                 };
                 await WebSockets.WebSocketManager.BroadCastAsync(JsonSerializer.Serialize(sensor));
 

@@ -66,7 +66,7 @@ namespace RealTimeMonitoringUTS.WebSockets
                             X = results.X,
                             Y = results.Y,
                             Z = results.Z,
-                            AddAt = DateTime.Now,
+                            AddAt = new(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, DateTime.Now.Hour, DateTime.Now.Minute, DateTime.Now.Second)
                         });
                         await dbContext.SaveChangesAsync();
                     }
