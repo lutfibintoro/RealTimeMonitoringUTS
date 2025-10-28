@@ -41,16 +41,20 @@
 }
 
 /* (Opsional) Anda bisa hapus ini jika sudah ada konten asli */
-#child-1 {
+.child-1 {
     background-color: #e6f7ff;
     border-color: #b3e0ff;
     color: #0056b3;
+    height: 100%;
+    width: 100%;
 }
 
-#child-2 {
+.child-2 {
     background-color: #fffbe6;
     border-color: #ffe58f;
     color: #8a6d3b;
+    height: 100%;
+    width: 100%;
 }
 
 .myChart {

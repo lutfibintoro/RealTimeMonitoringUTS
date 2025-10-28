@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Net.WebSockets;
 using System.Text;
+using RealTimeMonitoringUTS.Data;
+using RealTimeMonitoringUTS.Models;
 
 namespace RealTimeMonitoringUTS.WebSockets
 {
@@ -34,21 +36,41 @@ namespace RealTimeMonitoringUTS.WebSockets
         /// 
         /// </summary>
         /// <returns></returns>
-        public async Task EchoAsync(ILogger<Program> logger, Action remove)
+        public async Task EchoAsync(ILogger<Program> logger, Action remove, RealTimeMonitoringDbContext dbContext)
         {
             try
             {
                 _receiveResult = await _webSocket.ReceiveAsync(new ArraySegment<byte>(_buffer), CancellationToken.None);
+                await _webSocket.SendAsync(
+                    new ArraySegment<byte>(_buffer, 0, _receiveResult.Count),
+                    WebSocketMessageType.Text,
+                    _receiveResult.EndOfMessage,
+                    CancellationToken.None);
 
                 while (!_receiveResult.CloseStatus.HasValue)
                 {
-                    await _webSocket.SendAsync(
-                        new ArraySegment<byte>(_buffer, 0, _receiveResult.Count),
-                        WebSocketMessageType.Text,
-                        _receiveResult.EndOfMessage,
-                        CancellationToken.None);
-
                     _receiveResult = await _webSocket.ReceiveAsync(new ArraySegment<byte>(_buffer), CancellationToken.None);
+                    string receivedMessage = Encoding.UTF8.GetString(_buffer, 0, _receiveResult.Count);
+
+                    if (WebSocketManager.TryParseJson<SensorViewModelL>(receivedMessage, out SensorViewModelL? results))
+                    {
+                        dbContext.Sensors.Add(new()
+                        {
+                            TemperatureC = results.TemperatureC,
+                            Humidity = results.Humidity,
+                            MethaneGas = results.MethaneGas,
+                            HydrogenGas = results.HydrogenGas,
+                            Smoke = results.Smoke,
+                            LpgGas = results.LpgGas,
+                            AlcohonGas = results.AlcohonGas,
+                            X = results.X,
+                            Y = results.Y,
+                            Z = results.Z,
+                            AddAt = DateTime.Now,
+                        });
+                        await dbContext.SaveChangesAsync();
+                    }
+                    await WebSocketManager.BroadCastAsync(receivedMessage);
                 }
 
                 await _webSocket.CloseAsync(

@@ -5,6 +5,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 	<title>@ViewData["Title"]</title>
 	<script type="importmap"></script>
+	<link rel="icon" href="~/protect.ico" />
 	<link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
 	<link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
 	<link rel="stylesheet" href="~/RealTimeMonitoringUTS.styles.css" asp-append-version="true" />
@@ -17,6 +18,13 @@
 				<a class="navbar-brand fw-bold" asp-area="" asp-controller="" asp-action="">
 					<i class="bi bi-graph-up me-2"></i>@ViewData["Title"] Dashboard
 				</a>
+				<button class="navbar-toggler" type="button"
+						data-bs-toggle="collapse"
+						data-bs-target="#navbarNav" aria-controls="navbarNav"
+						aria-expanded="false"
+						aria-label="Toggle navigation">
+					<span class="navbar-toggler-icon"></span>
+				</button>
 				<div class="collapse navbar-collapse" id="navbarNav">
 					<ul class="navbar-nav ms-auto">
 						<li class="nav-item">
@@ -25,8 +33,8 @@
 							</a>
 						</li>
 						<li class="nav-item">
-							<a class="nav-link" asp-area="" asp-controller="Home" asp-action="History">
-								<i class="bi bi-shield-lock me-1"></i>History
+							<a class="nav-link" id="danger-buttor" href="#">
+								<i class="bi bi-shield-lock me-1"></i>Danger 💀
 							</a>
 						</li>
 						<li class="nav-item">

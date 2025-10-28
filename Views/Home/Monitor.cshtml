@@ -4,24 +4,50 @@
 <link rel="stylesheet" href="~/css/Home/Monitor.css" />
 
 <div class="parent-container">
-	<div class="child-container" id="child-1">
+	<div class="child-container child-1">
 		<canvas class="myChart" id="chart-TemperatureC"></canvas>
 	</div>
-	<div class="child-container" id="child-2">
+	<div class="child-container child-2">
 		<canvas class="myChart" id="chart-Humidity"></canvas>
 	</div>
 </div>
 
 <div class="parent-container">
-	<div class="child-container" id="child-1">
+	<div class="child-container child-1">
 		<canvas class="myChart" id="chart-MethaneGas"></canvas>
 	</div>
-	<div class="child-container" id="child-2">
+	<div class="child-container child-2">
 		<canvas class="myChart" id="chart-HydrogenGas"></canvas>
 	</div>
 </div>
 
+<div class="parent-container">
+	<div class="child-container child-1">
+		<canvas class="myChart" id="chart-Smoke"></canvas>
+	</div>
+	<div class="child-container child-2">
+		<canvas class="myChart" id="chart-LpgGas"></canvas>
+	</div>
+</div>
+
+<div class="parent-container">
+	<div class="child-container child-1">
+		<canvas class="myChart" id="chart-AlcohonGas"></canvas>
+	</div>
+	<div class="child-container child-2">
+		<canvas class="myChart" id="chart-X"></canvas>
+	</div>
+</div>
+
+<div class="parent-container">
+	<div class="child-container child-1">
+		<canvas class="myChart" id="chart-Y"></canvas>
+	</div>
+	<div class="child-container child-2">
+		<canvas class="myChart" id="chart-Z"></canvas>
+	</div>
+</div>
 @section Scripts {
-	<script src="~/lib/chart.js/dist/chart.js"></script>
+	<script src="~/lib/chart.js/dist/chart.umd.js"></script>
 	<script src="~/js/Home/Monitor.js"></script>
 }
