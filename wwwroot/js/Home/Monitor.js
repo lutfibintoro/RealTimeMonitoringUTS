@@ -476,9 +476,18 @@ webSocket.onerror = function (error) {
     console.log(`[error] Terjadi error: ${error.message}`);
 };
 
-
+let i = 1;
 const dangerContainer = document.getElementById('danger-buttor');
 dangerContainer.addEventListener('click', function (event) {
+    if (webSocket.readyState === WebSocket.OPEN) {
+        if (i % 2 == 0) {
+            webSocket.send("danger");
+        }
+        else {
+            webSocket.send("secure");
+        }
+        i++;
+    }
     $.ajax({
         url: '/arduino',
         type: 'DELETE',

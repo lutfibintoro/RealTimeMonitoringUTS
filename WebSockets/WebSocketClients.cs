@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Net.WebSockets;
 using System.Text;
+using System.Text.Json;
 using RealTimeMonitoringUTS.Data;
+using RealTimeMonitoringUTS.Data.Model;
 using RealTimeMonitoringUTS.Models;
 
 namespace RealTimeMonitoringUTS.WebSockets
@@ -54,7 +56,7 @@ namespace RealTimeMonitoringUTS.WebSockets
 
                     if (WebSocketManager.TryParseJson<SensorViewModelL>(receivedMessage, out SensorViewModelL? results))
                     {
-                        dbContext.Sensors.Add(new()
+                        Sensor sensor = new()
                         {
                             TemperatureC = results.TemperatureC,
                             Humidity = results.Humidity,
@@ -67,10 +69,20 @@ namespace RealTimeMonitoringUTS.WebSockets
                             Y = results.Y,
                             Z = results.Z,
                             AddAt = new(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, DateTime.Now.Hour, DateTime.Now.Minute, DateTime.Now.Second)
+                        };
+
+                        dbContext.Sensors.Add(sensor);
+                        _ = Task.Run(async () =>
+                        {
+                            await dbContext.SaveChangesAsync();
                         });
-                        await dbContext.SaveChangesAsync();
+
+                        await WebSocketManager.BroadCastAsync(JsonSerializer.Serialize(sensor));
                     }
-                    await WebSocketManager.BroadCastAsync(receivedMessage);
+                    else
+                    {
+                        await WebSocketManager.BroadCastAsync(receivedMessage);
+                    }
                 }
 
                 await _webSocket.CloseAsync(

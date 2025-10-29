@@ -5,6 +5,7 @@ using System.Text.Json;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using RealTimeMonitoringUTS.Data;
+using RealTimeMonitoringUTS.Models;
 
 namespace RealTimeMonitoringUTS.WebSockets
 {
