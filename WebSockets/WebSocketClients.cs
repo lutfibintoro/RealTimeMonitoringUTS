@@ -2,6 +2,7 @@
 using System.Net.WebSockets;
 using System.Text;
 using System.Text.Json;
+using Microsoft.Extensions.Logging;
 using RealTimeMonitoringUTS.Data;
 using RealTimeMonitoringUTS.Data.Model;
 using RealTimeMonitoringUTS.Models;
@@ -38,7 +39,7 @@ namespace RealTimeMonitoringUTS.WebSockets
         /// 
         /// </summary>
         /// <returns></returns>
-        public async Task EchoAsync(ILogger<Program> logger, Action remove, RealTimeMonitoringDbContext dbContext)
+        public async Task EchoAsync(ILogger<Program> logger, RealTimeMonitoringDbContext dbContext)
         {
             try
             {
@@ -48,6 +49,7 @@ namespace RealTimeMonitoringUTS.WebSockets
                     WebSocketMessageType.Text,
                     _receiveResult.EndOfMessage,
                     CancellationToken.None);
+                WebSocketManager.Clients.Add(this);
 
                 while (!_receiveResult.CloseStatus.HasValue)
                 {
@@ -85,6 +87,8 @@ namespace RealTimeMonitoringUTS.WebSockets
                     }
                 }
 
+                WebSocketManager.Clients.Remove(this);
+                await Task.Delay(3000);
                 await _webSocket.CloseAsync(
                     _receiveResult.CloseStatus.Value,
                     _receiveResult.CloseStatusDescription,
@@ -101,22 +105,28 @@ namespace RealTimeMonitoringUTS.WebSockets
             }
             finally
             {
-                remove();
+                WebSocketManager.Clients.Remove(this);
                 logger.LogInformation("1 client remove");
             }
         }
 
         public async Task SendMeMessagesAsync(string messages)
         {
-            if (_webSocket.State == WebSocketState.Closed)
-                return;
+            try
+            {
+                if (_webSocket.State == WebSocketState.Closed || !WebSocketManager.Clients.Contains(this))
+                    return;
 
-            byte[] message = Encoding.UTF8.GetBytes(messages);
-            await _webSocket.SendAsync(
-                new ArraySegment<byte>(message, 0, message.Length),
-                WebSocketMessageType.Text,
-                _receiveResult!.EndOfMessage,
-                CancellationToken.None);
+                byte[] message = Encoding.UTF8.GetBytes(messages);
+                await _webSocket.SendAsync(
+                    new ArraySegment<byte>(message, 0, message.Length),
+                    WebSocketMessageType.Text,
+                    _receiveResult!.EndOfMessage,
+                    CancellationToken.None);
+            }
+            catch (Exception)
+            {
+            }
         }
     }
 }

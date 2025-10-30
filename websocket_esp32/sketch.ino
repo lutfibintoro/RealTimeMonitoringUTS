@@ -18,6 +18,8 @@ WebSocketsClient webSocket;
 String myGetMessage;
 
 const int buzzerPin = 26;
+int isDangerArea = 0;
+float beat = 0.65;
 
 void webSocketEvent(WStype_t type, uint8_t *payload, size_t length)
 {
@@ -38,15 +40,13 @@ void webSocketEvent(WStype_t type, uint8_t *payload, size_t length)
         myGetMessage = String((char *)payload);
         if (myGetMessage == "danger")
         {
-            tone(buzzerPin, 2093);
             Serial.printf("danger area");
-            delay(100);
+            isDangerArea = 2217;
         }
         else if (myGetMessage == "secure")
         {
-            noTone(buzzerPin);
             Serial.printf("secure area");
-            delay(100);
+            isDangerArea = 0;
         }
         break;
     case WStype_ERROR:
@@ -189,18 +189,13 @@ void loop()
 {
     webSocket.loop();
 
-    // LED indicator
     digitalWrite(LED_PIN, HIGH);
+    tone(buzzerPin, isDangerArea);
     delay(100);
     digitalWrite(LED_PIN, LOW);
+    noTone(buzzerPin);
     delay(100);
 
-    // Kirim data sensor secara periodik jika terkoneksi
-    // if (webSocket.isConnected() && millis() - lastDataSend > dataInterval)
-    // {
-    //     sendSensorData();
-    //     lastDataSend = millis();
-    // }
     if (webSocket.isConnected())
     {
         sendSensorData();

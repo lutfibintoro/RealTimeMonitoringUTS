@@ -26,8 +26,7 @@ namespace RealTimeMonitoringUTS.WebSockets
             using (WebSocket webSocket = await httpContext.WebSockets.AcceptWebSocketAsync(new WebSocketAcceptContext() { DangerousEnableCompression = true }))
             {
                 WebSocketClients client = new(webSocket, new byte[1024 * 4]);
-                Clients.Add(client);
-                await client.EchoAsync(logger, () => Clients.Remove(client), dbContext);
+                await client.EchoAsync(logger, dbContext);
             }
         }
 

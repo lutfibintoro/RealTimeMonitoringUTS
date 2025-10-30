@@ -1,8 +1,644 @@
 ﻿@{
-    ViewData["Title"] = "Home";
+	ViewData["Title"] = "Home";
 }
 
-<div>
-    <h1>Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div style="width: 100%;">
+	<h1>Welcome</h1>
+	<p>Git Repository <a href="https://github.com/lutfibintoro/RealTimeMonitoringUTS">building Web apps with ASP.NET Core</a>.</p>
+</div>
+
+<style>
+	.helmet-table {
+		width: 95%;
+		margin: 20px auto 60px;
+		border-collapse: collapse;
+		text-align: center;
+		font-family: Arial;
+	}
+
+		.helmet-table th {
+			background: #0067e6;
+			color: #fff;
+			padding: 12px;
+			font-size: 14px;
+		}
+
+		.helmet-table td {
+			border: 1px solid #ddd;
+			padding: 10px;
+			font-size: 14px;
+		}
+
+		.helmet-table tr:nth-child(even) {
+			background: #e8f5e8; /* Lebih hijau muda untuk kontras yang lebih baik */
+		}
+
+		.helmet-table tr:nth-child(odd) {
+			background: #fff; /* Putih untuk baris ganjil */
+		}
+
+		/* Style khusus untuk kolom Nama Pekerja dan Lokasi Area Tambang */
+		.helmet-table th:nth-child(2), .helmet-table td:nth-child(2) {
+			background-color: #e3f2fd; /* Biru muda untuk nama pekerja */
+			font-weight: bold;
+		}
+
+		.helmet-table th:nth-child(3), .helmet-table td:nth-child(3) {
+			background-color: #fff3e0; /* Oranye muda untuk lokasi area tambang */
+			font-weight: bold;
+		}
+
+		/* Tambahan: Highlight baris jika temperatur > 35°C */
+		.helmet-table tr.high-temp td {
+			background-color: #ffebee; /* Merah muda untuk peringatan */
+		}
+
+	.stats-container {
+		display: flex;
+		justify-content: center;
+		gap: 22px;
+		margin: 40px auto;
+		flex-wrap: wrap;
+	}
+
+	.stat-card {
+		width: 220px;
+		background: #ffffff;
+		padding: 20px 10px;
+		border-radius: 12px;
+		color: #222;
+		text-align: center;
+		font-family: Arial, sans-serif;
+		font-weight: bold;
+		box-shadow: 2px 2px 15px rgba(0, 0, 0, 0.09);
+		transition: 0.3s;
+	}
+
+		.stat-card:hover {
+			transform: translateY(-6px);
+			cursor: pointer;
+		}
+
+		.stat-card h3 {
+			font-size: 18px;
+			margin-bottom: 10px;
+		}
+
+		.stat-card span {
+			font-size: 34px;
+		}
+
+	/* Warna status */
+	.online {
+		border-bottom: 5px solid #00C853;
+	}
+
+	.offline {
+		border-bottom: 5px solid #E53935;
+	}
+
+	.danger {
+		border-bottom: 5px solid #FFC400;
+	}
+
+	.total {
+		border-bottom: 5px solid #1E88E5;
+	}
+
+	.date-time-box {
+		text-align: center;
+		margin-top: 20px;
+		font-family: "Segoe UI", sans-serif;
+	}
+
+	#clock {
+		font-size: 38px;
+		font-weight: bold;
+		color: #007bff;
+	}
+
+	#date {
+		font-size: 18px;
+		margin-top: 6px;
+		color: #555;
+	}
+
+	/* Style untuk chart */
+	.charts-container {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+		gap: 20px;
+		width: 95%;
+		margin: 40px auto;
+	}
+
+	.chart-card {
+		background: #ffffff;
+		padding: 20px;
+		border-radius: 15px;
+		box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+		text-align: center;
+		font-family: Arial, sans-serif;
+	}
+
+		.chart-card h3 {
+			margin-bottom: 15px;
+			color: #222;
+		}
+
+	canvas {
+		max-width: 100%;
+		height: 300px;
+	}
+</style>
+
+<div class="date-time-box" style="width: 100%;">
+	<div id="clock"></div>
+	<div id="date"></div>
+</div>
+<div class="stats-container" style="width: 100%;">
+	<div class="stat-card online">
+		<h3>Helm Online</h3>
+		<span id="onlineCount">1</span>
+	</div>
+
+	<div class="stat-card offline">
+		<h3>Helm Offline</h3>
+		<span id="offlineCount">2</span>
+	</div>
+
+	<div class="stat-card danger">
+		<h3>Alert Bahaya</h3>
+		<span id="dangerCount">0</span>
+	</div>
+
+	<div class="stat-card total">
+		<h3>Total Helm</h3>
+		<span id="totalCount">2</span>
+	</div>
+</div>
+
+<!-- Charts animasi kartun di bawah table -->
+<div class="charts-container">
+	<div class="chart-card">
+		<h3>🌡️ Temperatur Helm</h3>
+		<canvas id="temperatureChart"></canvas>
+	</div>
+	<div class="chart-card">
+		<h3>💧 Humidity Helm</h3>
+		<canvas id="humidityChart"></canvas>
+	</div>
+	<div class="chart-card">
+		<h3>⚡ Status Helm</h3>
+		<canvas id="statusChart"></canvas>
+	</div>
+	<div class="chart-card">
+		<h3>🔥 Metana Levels</h3>
+		<canvas id="methaneChart"></canvas>
+	</div>
+	<div class="chart-card">
+		<h3>🚀 Akselerasi X-Y-Z</h3>
+		<canvas id="accelerationChart"></canvas>
+	</div>
+	<div class="chart-card">
+		<h3>💨 Gas Levels (Smoke & LPG)</h3>
+		<canvas id="gasChart"></canvas>
+	</div>
+</div>
+
+<table class="helmet-table">
+	<thead>
+		<tr>
+			<th>Helm</th>
+			<th>Nama Pekerja</th>
+			<th>Lokasi Area Tambang</th>
+			<th>Temperatur (°C)</th>
+			<th>Humidity (%)</th>
+			<th>Metana (CH₄)</th>
+			<th>Hydrogen (H₂)</th>
+			<th>Smoke</th>
+			<th>LPG Gas</th>
+			<th>Alcohol Gas</th>
+			<th>Akselerasi X</th>
+			<th>Akselerasi Y</th>
+			<th>Akselerasi Z</th>
+		</tr>
+	</thead>
+	<tbody id="helmetData">
+		<!-- Data akan di-update otomatis -->
+	</tbody>
+</table>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+	function random(min, max) {
+		return (Math.random() * (max - min) + min).toFixed(2);
+	}
+
+	function loadHelmetData() {
+		const workerNames = ["Ahmad", "Budi", "Citra", "Dedi", "Eka", "Fajar"];
+		const locations = ["Pos1", "Pos2", "Pos3", "Pos4", "Pos5", "Pos6"];
+
+		let table = "";
+		let temperatures = [];
+		let humidities = [];
+		let methanes = [];
+		let smokes = [];
+		let lpgs = [];
+		let accX = [];
+		let accY = [];
+		let accZ = [];
+		for (let i = 1; i <= 6; i++) { // 6 helm contoh
+			let temp = parseFloat(random(29, 37));
+			let hum = parseFloat(random(40, 90));
+			let met = parseFloat(random(100, 500));
+			let smk = parseFloat(random(10, 100));
+			let lpg = parseFloat(random(50, 300));
+			let ax = parseFloat(random(-1, 1));
+			let ay = parseFloat(random(-1, 1));
+			let az = parseFloat(random(-1, 1));
+
+			temperatures.push(temp);
+			humidities.push(hum);
+			methanes.push(met);
+			smokes.push(smk);
+			lpgs.push(lpg);
+			accX.push(ax);
+			accY.push(ay);
+			accZ.push(az);
+
+			let rowClass = temp > 35 ? "high-temp" : "";
+			table += `
+			<tr class="${rowClass}">
+				<td>Helmet-${i}</td>
+				<td>${workerNames[i-1]}</td>
+				<td>${locations[i-1]}</td>
+				<td>${temp}</td>
+				<td>${hum}</td>
+				<td>${met} ppm</td>
+				<td>${random(50, 400)} ppm</td>
+				<td>${smk} ppm</td>
+				<td>${lpg} ppm</td>
+				<td>${random(20, 250)} ppm</td>
+				<td>${ax}</td>
+				<td>${ay}</td>
+				<td>${az}</td>
+			</tr>`;
+		}
+		document.getElementById("helmetData").innerHTML = table;
+		updateCharts(temperatures, humidities, methanes, smokes, lpgs, accX, accY, accZ);
+	}
+
+	setInterval(loadHelmetData, 3000);
+	loadHelmetData();
+</script>
+<script>
+	function updateTime() {
+		const now = new Date();
+		const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+
+		document.getElementById("clock").innerText =
+			now.toLocaleTimeString('en-GB'); // Format 24 Jam
+
+		document.getElementById("date").innerText =
+			now.toLocaleDateString('id-ID', options);
+	}
+
+	setInterval(updateTime, 1000);
+	updateTime();
+</script>
+
+<script>
+	// Fungsi untuk animasi kartun (bounce dan warna cerah)
+	const cartoonOptions = {
+		animation: {
+			duration: 1500,
+			easing: 'easeOutBounce' // Animasi kartun-like
+		},
+		plugins: {
+			legend: {
+				display: true,
+				position: 'top',
+				labels: {
+					font: {
+						size: 14,
+						family: 'Comic Sans MS' // Font kartun
+					}
+				}
+			}
+		}
+	};
+
+	// Chart 1: Line Chart untuk Temperatur
+	const ctxTemp = document.getElementById('temperatureChart').getContext('2d');
+	const temperatureChart = new Chart(ctxTemp, {
+		type: 'line',
+		data: {
+			labels: ['Helmet-1', 'Helmet-2', 'Helmet-3', 'Helmet-4', 'Helmet-5', 'Helmet-6'],
+			datasets: [{
+				label: 'Temperatur (°C)',
+				data: [],
+				borderColor: '#FF6B6B',
+				backgroundColor: 'rgba(255, 107, 107, 0.3)',
+				borderWidth: 3,
+				fill: true,
+				tension: 0.4,
+				pointBackgroundColor: '#FF6B6B',
+				pointBorderColor: '#fff',
+				pointBorderWidth: 3,
+				pointRadius: 8,
+			}]
+		},
+		options: {
+			...cartoonOptions,
+			scales: {
+				y: {
+					beginAtZero: false,
+					min: 25,
+					max: 40
+				}
+			}
+		}
+	});
+
+	// Chart 2: Bar Chart untuk Humidity
+	const ctxHum = document.getElementById('humidityChart').getContext('2d');
+	const humidityChart = new Chart(ctxHum, {
+		type: 'bar',
+		data: {
+			labels: ['Helmet-1', 'Helmet-2', 'Helmet-3', 'Helmet-4', 'Helmet-5', 'Helmet-6'],
+			datasets: [{
+				label: 'Humidity (%)',
+				data: [],
+				backgroundColor: ['#4ECDC4', '#45B7D1', '#96CEB4', '#FFEAA7', '#DDA0DD', '#98D8C8'],
+				borderColor: '#fff',
+				borderWidth: 2,
+			}]
+		},
+		options: cartoonOptions
+	});
+
+	// Chart 3: Pie Chart untuk Status Helm (simulasi berdasarkan online/offline)
+	const ctxStatus = document.getElementById('statusChart').getContext('2d');
+	const statusChart = new Chart(ctxStatus, {
+		type: 'pie',
+		data: {
+			labels: ['Online', 'Offline'],
+			datasets: [{
+				data: [1, 5], // Simulasi, bisa diupdate berdasarkan data
+				backgroundColor: ['#00C853', '#E53935'],
+				borderColor: '#fff',
+				borderWidth: 3,
+			}]
+		},
+		options: cartoonOptions
+	});
+
+	// Chart 4: Doughnut Chart untuk Metana
+	const ctxMeth = document.getElementById('methaneChart').getContext('2d');
+	const methaneChart = new Chart(ctxMeth, {
+		type: 'doughnut',
+		data: {
+			labels: ['Helmet-1', 'Helmet-2', 'Helmet-3', 'Helmet-4', 'Helmet-5', 'Helmet-6'],
+			datasets: [{
+				label: 'Metana (ppm)',
+				data: [],
+				backgroundColor: ['#FF9FF3', '#FECA57', '#FF6B6B', '#48DBFB', '#0ABDE3', '#10AC84'],
+				borderColor: '#fff',
+				borderWidth: 3,
+			}]
+		},
+		options: cartoonOptions
+	});
+
+	// Chart 5: Radar Chart untuk Akselerasi
+	const ctxAcc = document.getElementById('accelerationChart').getContext('2d');
+	const accelerationChart = new Chart(ctxAcc, {
+		type: 'radar',
+		data: {
+			labels: ['Helmet-1', 'Helmet-2', 'Helmet-3', 'Helmet-4', 'Helmet-5', 'Helmet-6'],
+			datasets: [{
+				label: 'Akselerasi X',
+				data: [],
+				backgroundColor: 'rgba(255, 99, 132, 0.3)',
+				borderColor: '#FF6384',
+				borderWidth: 3,
+				pointBackgroundColor: '#FF6384',
+				pointBorderColor: '#fff',
+				pointRadius: 6,
+			}, {
+				label: 'Akselerasi Y',
+				data: [],
+				backgroundColor: 'rgba(54, 162, 235, 0.3)',
+				borderColor: '#36A2EB',
+				borderWidth: 3,
+				pointBackgroundColor: '#36A2EB',
+				pointBorderColor: '#fff',
+				pointRadius: 6,
+			}, {
+				label: 'Akselerasi Z',
+				data: [],
+				backgroundColor: 'rgba(75, 192, 192, 0.3)',
+				borderColor: '#4BC0C0',
+				borderWidth: 3,
+				pointBackgroundColor: '#4BC0C0',
+				pointBorderColor: '#fff',
+				pointRadius: 6,
+			}]
+		},
+		options: cartoonOptions
+	});
+
+	// Chart 6: Area Chart untuk Gas Levels (Smoke & LPG)
+	const ctxGas = document.getElementById('gasChart').getContext('2d');
+	const gasChart = new Chart(ctxGas, {
+		type: 'line',
+		data: {
+			labels: ['Helmet-1', 'Helmet-2', 'Helmet-3', 'Helmet-4', 'Helmet-5', 'Helmet-6'],
+			datasets: [{
+				label: 'Smoke (ppm)',
+				data: [],
+				borderColor: '#FF9F40',
+				backgroundColor: 'rgba(255, 159, 64, 0.3)',
+				borderWidth: 3,
+				fill: true,
+				tension: 0.4,
+				pointBackgroundColor: '#FF9F40',
+				pointBorderColor: '#fff',
+				pointRadius: 8,
+			}, {
+				label: 'LPG Gas (ppm)',
+				data: [],
+				borderColor: '#FF6384',
+				backgroundColor: 'rgba(255, 99, 132, 0.3)',
+				borderWidth: 3,
+				fill: true,
+				tension: 0.4,
+				pointBackgroundColor: '#FF6384',
+				pointBorderColor: '#fff',
+				pointRadius: 8,
+			}]
+		},
+		options: {
+			...cartoonOptions,
+			scales: {
+				y: {
+					beginAtZero: true
+				}
+			}
+		}
+	});
+
+	function updateCharts(temps, hums, mets, smks, lpgs, ax, ay, az) {
+		temperatureChart.data.datasets[0].data = temps;
+		temperatureChart.update('active');
+
+		humidityChart.data.datasets[0].data = hums;
+		humidityChart.update('active');
+
+		// Status chart tetap statis atau update berdasarkan logika
+		statusChart.update('active');
+
+		methaneChart.data.datasets[0].data = mets;
+		methaneChart.update('active');
+
+		accelerationChart.data.datasets[0].data = ax;
+		accelerationChart.data.datasets[1].data = ay;
+		accelerationChart.data.datasets[2].data = az;
+		accelerationChart.update('active');
+
+		gasChart.data.datasets[0].data = smks;
+		gasChart.data.datasets[1].data = lpgs;
+		gasChart.update('active');
+	}
+</script>
+
+<style>
+	.developer-profiles-container {
+		font-family: 'Arial', sans-serif;
+		margin: 0;
+		padding: 0;
+		background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+		color: #fff;
+		overflow-x: hidden;
+	}
+
+	#judul {
+		text-align: center;
+		padding: 50px 20px;
+		background: rgba(0, 0, 0, 0.3);
+		animation: fadeInDown 1s ease-out;
+	}
+
+	h1 {
+		font-size: 3em;
+		margin: 0;
+		text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+	}
+
+	.container {
+		display: flex;
+		justify-content: center;
+		flex-wrap: wrap;
+		gap: 30px;
+		padding: 50px 20px;
+	}
+
+	.profile-card {
+		background: rgba(255, 255, 255, 0.1);
+		border-radius: 15px;
+		padding: 20px;
+		width: 300px;
+		text-align: center;
+		box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+		backdrop-filter: blur(10px);
+		transition: transform 0.3s ease, box-shadow 0.3s ease;
+		animation: fadeInUp 1s ease-out;
+		animation-delay: 0.5s;
+		opacity: 0;
+		animation-fill-mode: forwards;
+	}
+
+		.profile-card:nth-child(2) {
+			animation-delay: 0.7s;
+		}
+
+		.profile-card:nth-child(3) {
+			animation-delay: 0.9s;
+		}
+
+		.profile-card:hover {
+			transform: translateY(-10px);
+			box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+		}
+
+	.profile-img {
+		width: 150px;
+		height: 150px;
+		border-radius: 50%;
+		margin-bottom: 20px;
+		border: 5px solid #fff;
+		transition: transform 0.3s ease;
+	}
+
+	.profile-card:hover .profile-img {
+		transform: scale(1.1);
+	}
+
+	h2 {
+		font-size: 1.5em;
+		margin: 10px 0;
+	}
+
+	p {
+		font-size: 1.1em;
+		margin: 0;
+	}
+
+	@@keyframes fadeInDown {
+		from {
+			opacity: 0;
+			transform: translateY(-50px);
+		}
+
+		to {
+			opacity: 1;
+			transform: translateY(0);
+		}
+	}
+
+	@@keyframes fadeInUp {
+		from {
+			opacity: 0;
+			transform: translateY(50px);
+		}
+
+		to {
+			opacity: 1;
+			transform: translateY(0);
+		}
+	}
+</style>
+
+<div class="developer-profiles-container">
+	<div id="judul">
+		<h1>Developer Profiles</h1>
+	</div>
+	<div class="container">
+		<div class="profile-card">
+			<img src="https://picsum.photos/150/150?random=1" alt="John Doe" class="profile-img">
+			<h2>Afrizal Rizky</h2>
+			<p>UI/UX and Frontend Developer</p>
+		</div>
+		<div class="profile-card">
+			<img src="https://picsum.photos/150/150?random=2" alt="Jane Smith" class="profile-img">
+			<h2>Lutfi Bintoro</h2>
+			<p>Backend Developer</p>
+		</div>
+		<div class="profile-card">
+			<img src="https://picsum.photos/150/150?random=3" alt="Alex Johnson" class="profile-img">
+			<h2>Andreas Kiew</h2>
+			<p>Hardware and Electrical Engineer</p>
+		</div>
+	</div>
 </div>
