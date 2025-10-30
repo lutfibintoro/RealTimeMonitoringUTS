@@ -53,8 +53,20 @@ namespace RealTimeMonitoringUTS.WebSockets
 
                 while (!_receiveResult.CloseStatus.HasValue)
                 {
-                    _receiveResult = await _webSocket.ReceiveAsync(new ArraySegment<byte>(_buffer), CancellationToken.None);
-                    string receivedMessage = Encoding.UTF8.GetString(_buffer, 0, _receiveResult.Count);
+                    string receivedMessage;
+                    using (MemoryStream memoryStream = new())
+                    {
+                        do
+                        {
+                            _receiveResult = await _webSocket.ReceiveAsync(new ArraySegment<byte>(_buffer), CancellationToken.None);
+                            memoryStream.Write(_buffer, 0, _receiveResult.Count);
+                        }
+                        while (!_receiveResult.EndOfMessage);
+
+                        memoryStream.Seek(0, SeekOrigin.Begin);
+                        using (StreamReader reader = new(memoryStream, Encoding.UTF8))
+                            receivedMessage = await reader.ReadToEndAsync();
+                    }
 
                     if (WebSocketManager.TryParseJson<SensorViewModelL>(receivedMessage, out SensorViewModelL? results))
                     {
@@ -121,7 +133,7 @@ namespace RealTimeMonitoringUTS.WebSockets
                 await _webSocket.SendAsync(
                     new ArraySegment<byte>(message, 0, message.Length),
                     WebSocketMessageType.Text,
-                    _receiveResult!.EndOfMessage,
+                    true,
                     CancellationToken.None);
             }
             catch (Exception)

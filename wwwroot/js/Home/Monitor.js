@@ -401,21 +401,21 @@ webSocket.onopen = function (event) {
 
 // 2. (onmessage): Dipanggil setiap kali menerima pesan dari server
 webSocket.onmessage = function (event) {
-    //console.log("Raw data dari server:", event.data);
+    console.log("Raw data dari server:", event.data);
 
     try {
         const objData = JSON.parse(event.data);
-        console.log(objData.AddAt);
-        console.log(objData.TemperatureC);
-        console.log(objData.Humidity);
-        console.log(objData.MethaneGas);
-        console.log(objData.HydrogenGas);
-        console.log(objData.Smoke);
-        console.log(objData.LpgGas);
-        console.log(objData.AlcohonGas);
-        console.log(objData.X);
-        console.log(objData.Y);
-        console.log(objData.Z);
+        //console.log(objData.AddAt);
+        //console.log(objData.TemperatureC);
+        //console.log(objData.Humidity);
+        //console.log(objData.MethaneGas);
+        //console.log(objData.HydrogenGas);
+        //console.log(objData.Smoke);
+        //console.log(objData.LpgGas);
+        //console.log(objData.AlcohonGas);
+        //console.log(objData.X);
+        //console.log(objData.Y);
+        //console.log(objData.Z);
 
         addAtValue.push(objData.AddAt);
         temperatureCValue.push(objData.TemperatureC);
@@ -476,8 +476,8 @@ webSocket.onerror = function (error) {
     console.log(`[error] Terjadi error: ${error.message}`);
 };
 
-let i = 1;
-const dangerContainer = document.getElementById('danger-buttor');
+let i = 2;
+const dangerContainer = document.getElementById('danger-button');
 dangerContainer.addEventListener('click', function (event) {
     if (webSocket.readyState === WebSocket.OPEN) {
         if (i % 2 == 0) {
